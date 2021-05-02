@@ -12,6 +12,11 @@ declare module '@carbon/icons-vue/es/migrate--alt/32' {
   export default Vue
 }
 
+declare module '@carbon/icons-vue/es/settings/20' {
+  import { Vue } from 'vue'
+  export default Vue
+}
+
 declare module '@carbon/icons-vue/es/close/16' {
   import { Vue } from 'vue'
   export default Vue

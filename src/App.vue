@@ -35,6 +35,12 @@ export default class App extends Vue {
   meta = project?.meta
   topics = project?.topics
   eventHub = new Vue()
+
+  mounted(): void {
+    // TODO read from localstorage or indexeddb
+    this.eventHub.$emit('view-mode', 'explorer')
+    console.log('init view mode')
+  }
 }
 </script>
 

@@ -53,7 +53,7 @@ Therefore it controls all fruit-related data.`,
             name: 'fruitType',
             type: {
               name: 'FruitType',
-              symbols: ['poisenous', 'edible'],
+              symbols: ['poisonous', 'edible'],
               type: 'enum',
             },
           },

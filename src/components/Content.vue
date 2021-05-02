@@ -9,7 +9,7 @@
           v-if="hasMaintainerLink"
           target="_blank"
           rel="noopener noreferrer"
-          >{{ maintainerName }}</cv-link
+          >{{ maintainerName }} <Launch16 class="ml-0_2" /></cv-link
         ><span v-else>{{ maintainerName }}</span>
       </div>
       <div class="my-1_5 flex-row children-px-1">
@@ -25,28 +25,29 @@
           </cv-button>
         </a>
       </div>
-      <cv-tile v-if="hasProjectDescription" class="pre my-1_5" :light="true">
+      <ae-cv-tile v-if="hasProjectDescription" class="pre my-1_5" :light="true">
         <h3 class="pb-1">Description</h3>
         {{ projectDescription }}
-      </cv-tile>
+      </ae-cv-tile>
 
       <h2 class="my-1_5">Topics</h2>
 
-      <template v-for="rootTopic of rootTopics">
+      <template v-for="(rootTopic, idx) of rootTopics">
         <h3
           :key="rootTopic.topic"
           class="flex-inline-row align-items-center bx--type-mono"
         >
           <MigrateAlt class="mr-1" />{{ rootTopic.topic }}
         </h3>
-        <cv-tile
-          :key="rootTopic.topic + '_topic'"
+        <ae-cv-tile
           class="pre my-1_5"
           kind="expandable"
-          :light="true"
           ref="schemaTile"
+          :key="rootTopic.topic + '_topic'"
+          :light="true"
           :data-topic-id="rootTopic.topic"
           :data-schema-id="getSchemaName(rootTopic.schema)"
+          @expanded="updateExpanded(idx, $event)"
         >
           <h4
             class="pb-1 bx--type-mono"
@@ -63,9 +64,17 @@
             <p v-if="hasSchemaDoc(rootTopic.schema)" class="bx--type-italic">
               {{ getSchemaDoc(rootTopic.schema) }}
             </p>
-            <ae-schema-viewer :schema="rootTopic.schema" />
+            <ae-schema-viewer
+              :expanded="expandeds[idx]"
+              :viewMode="viewMode"
+              :schema="rootTopic.schema"
+              :rawAvroSchema="toJsonAvroSchema(rootTopic.schema)"
+              :generatedTypeScript="
+                generateTypeScriptFromSchema(rootTopic.schema)
+              "
+            />
           </template>
-        </cv-tile>
+        </ae-cv-tile>
       </template>
     </cv-content>
   </div>
@@ -74,31 +83,31 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import AePageHeader from './PageHeader.vue'
-import AeCustomCvTag from './CustomCvTag.vue'
+import AeCvTile from './customized-carbon-vue/cv-tile/cv-tile.vue'
 import AeSchemaViewer from './SchemaViewer.vue'
 import Launch16 from '@carbon/icons-vue/es/launch/16'
 import MigrateAlt from '@carbon/icons-vue/es/migrate--alt/32'
 import { ProjectMetadata, SchemaForTopic } from '../types'
-import { PrimitiveAvroType, Schema } from '@/avro-types'
+import { Schema } from '@/avro-types'
+import { avroToTypeScript } from 'avro-typescript'
 import {
-  getPrimitiveTypeDoc,
   getSchemaDoc,
   getSchemaStringName,
   hasNamespace,
-  isArraySchema,
   isComplexNamedSchema,
   isComplexSchema,
+  isEnumSchema,
   isPrimitiveType,
   isRecordSchema,
-  isUnionSchema,
 } from '@/avro-helper'
 
 @Component({
   components: {
     AePageHeader,
-    AeCustomCvTag,
     AeSchemaViewer,
+    AeCvTile,
     MigrateAlt,
+    Launch16,
   },
 })
 export default class Content extends Vue {
@@ -112,6 +121,10 @@ export default class Content extends Vue {
   eventHub?: Vue
 
   Launch16 = Launch16
+
+  viewMode: 'explorer' | 'avro' | 'typescript' | null = null
+
+  expandeds: boolean[] = []
 
   get metaName(): string {
     return this.meta?.name ?? '<meta.name>'
@@ -157,6 +170,8 @@ export default class Content extends Vue {
   }
 
   mounted(): void {
+    this.expandeds = this.rootTopics.map(() => false)
+
     if (!this.eventHub) {
       return
     }
@@ -202,6 +217,23 @@ export default class Content extends Vue {
         }
       }
     )
+    this.eventHub.$on(
+      'view-mode',
+      (viewMode: 'explorer' | 'avro' | 'typescript') => {
+        this.viewMode = viewMode
+
+        // resize tiles
+        const schemaTileRef = this.$refs.schemaTile
+        if (!schemaTileRef) {
+          return
+        }
+        const schemaTiles = Array.isArray(schemaTileRef)
+          ? (schemaTileRef as (Vue & { recalculateHeight?: () => void })[])
+          : [schemaTileRef as Vue & { recalculateHeight?: () => void }]
+        schemaTiles.forEach((tile) => tile.recalculateHeight?.())
+      }
+    )
+    console.log('waiting for view mode')
   }
 
   hasNamespace(schema: Schema): boolean {
@@ -230,6 +262,26 @@ export default class Content extends Vue {
 
   getSchemaDoc(schema?: Schema): string | null {
     return getSchemaDoc(schema)
+  }
+
+  toJsonAvroSchema(schema?: Schema): string {
+    if (!schema) {
+      return '{}'
+    }
+    return JSON.stringify(schema, null, 2)
+  }
+  generateTypeScriptFromSchema(schema?: Schema): string {
+    if (!schema) {
+      return '// no schema'
+    }
+    if (isRecordSchema(schema) || isEnumSchema(schema)) {
+      return avroToTypeScript(schema as any)
+    }
+    return '// TODO - schema not yet implemented'
+  }
+
+  updateExpanded(idx: number, val: boolean): void {
+    this.$set(this.expandeds, idx, val)
   }
 }
 </script>

@@ -7,8 +7,30 @@
       <cv-header-name href="javascript:void(0)" prefix="avro">
         explorer
       </cv-header-name>
-      <template v-slot:left-panels v-if="false"> </template>
-      <template v-slot:right-panels v-if="true"> </template>
+      <template v-slot:header-global>
+        <cv-header-global-action
+          aria-label="App switcher"
+          aria-controls="settings-panel"
+        >
+          <Settings20 />
+        </cv-header-global-action>
+      </template>
+      <template v-slot:right-panels v-if="true">
+        <ae-cv-header-panel id="settings-panel">
+          <div class="dark-theme p-0_5">
+            <cv-select
+              v-model="viewMode"
+              :inline="false"
+              :light="false"
+              label="View Mode"
+            >
+              <cv-select-option value="explorer">Explorer</cv-select-option>
+              <cv-select-option value="avro">Avro Json Schema</cv-select-option>
+              <cv-select-option value="typescript">TypeScript</cv-select-option>
+            </cv-select>
+          </div>
+        </ae-cv-header-panel>
+      </template>
     </cv-header>
 
     <cv-side-nav id="side-nav" fixed expanded>
@@ -45,31 +67,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import CvHeader from '@carbon/vue/src/components/cv-ui-shell/cv-header.vue'
-import CvHeaderName from '@carbon/vue/src/components/cv-ui-shell/cv-header-name.vue'
-import CvSkipToContent from '@carbon/vue/src/components/cv-ui-shell/cv-skip-to-content.vue'
-import CvSideNav from '@carbon/vue/src/components/cv-ui-shell/cv-side-nav.vue'
-import CvSideNavItems from '@carbon/vue/src/components/cv-ui-shell/cv-side-nav-items.vue'
-import CvSideNavMenu from '@carbon/vue/src/components/cv-ui-shell/cv-side-nav-menu.vue'
-import CvSideNavMenuItem from '@carbon/vue/src/components/cv-ui-shell/cv-side-nav-menu-item.vue'
-import CvSideNavLink from '@carbon/vue/src/components/cv-ui-shell/cv-side-nav-link.vue'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import AeCvHeaderPanel from './customized-carbon-vue/cv-ui-shell/cv-header-panel.vue'
 import Fade16 from '@carbon/icons-vue/es/fade/16'
+import Settings20 from '@carbon/icons-vue/es/settings/20'
 import MigrateAlt from '@carbon/icons-vue/es/migrate--alt/16'
 import { Navigation } from '../types'
 
 @Component({
   components: {
-    CvHeader,
-    CvSkipToContent,
-    CvHeaderName,
-    CvSideNav,
-    CvSideNavItems,
-    CvSideNavMenu,
-    CvSideNavMenuItem,
-    CvSideNavLink,
     Fade16,
     MigrateAlt,
+    Settings20,
+    AeCvHeaderPanel,
   },
 })
 export default class UiShell extends Vue {
@@ -78,6 +88,8 @@ export default class UiShell extends Vue {
 
   @Prop()
   eventHub?: Vue
+
+  viewMode: 'explorer' | 'avro' | 'typescript' = 'explorer'
 
   get topics(): Navigation['topics'] {
     return this.navigation?.topics ?? []
@@ -92,6 +104,11 @@ export default class UiShell extends Vue {
       return
     }
     this.eventHub.$emit('menu-item-click', { topicName, schemaName })
+  }
+
+  @Watch('viewMode')
+  onViewModeChange(val: 'explorer' | 'avro' | 'typescript'): void {
+    this.eventHub?.$emit('view-mode', val)
   }
 }
 </script>
