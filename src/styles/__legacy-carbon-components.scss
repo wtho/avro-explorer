@@ -1,0 +1,38 @@
+
+@import 'carbon-components/scss/globals/scss/_feature-flags';
+@import 'carbon-components/scss/globals/scss/_vars';
+@import 'carbon-components/scss/globals/scss/_colors';
+@import 'carbon-components/scss/globals/scss/_theme';
+@import 'carbon-components/scss/globals/scss/_mixins';
+@import 'carbon-components/scss/globals/scss/_layout';
+@import 'carbon-components/scss/globals/scss/_layer';
+@import 'carbon-components/scss/globals/scss/_spacing';
+@import 'carbon-components/scss/globals/scss/_typography';
+@import '@carbon/elements/scss/import-once/import-once';
+@import 'carbon-components/scss/globals/scss/_css--reset';
+@import 'carbon-components/scss/globals/scss/_css--font-face';
+@import 'carbon-components/scss/globals/scss/_css--helpers';
+@import 'carbon-components/scss/globals/scss/_css--body';
+@import 'carbon-components/scss/globals/grid/_grid';
+
+@import 'carbon-components/scss/components/button/_button';
+@import 'carbon-components/scss/components/link/_link';
+@import 'carbon-components/scss/components/accordion/_accordion';
+@import 'carbon-components/scss/components/tile/_tile';
+
+// UI SHELL
+// @import 'carbon-components/scss/components/ui-shell/_ui-shell';
+
+// @import 'theme';
+@import './ui-shell--theme--customized';
+
+@import 'carbon-components/scss/components/ui-shell/_variables';
+@import 'carbon-components/scss/components/ui-shell/_functions';
+@import 'carbon-components/scss/components/ui-shell/_header';
+@import 'carbon-components/scss/components/ui-shell/_header-panel';
+@import 'carbon-components/scss/components/ui-shell/_product-switcher';
+@import 'carbon-components/scss/components/ui-shell/_switcher';
+// @import 'carbon-components/scss/components/ui-shell/_side-nav';
+@import './_ui-shell--side-nav';
+@import 'carbon-components/scss/components/ui-shell/_navigation-menu';
+@import 'carbon-components/scss/components/ui-shell/_content';

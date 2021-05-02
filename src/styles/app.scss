@@ -1,0 +1,104 @@
+@import '@carbon/type/scss/type';
+@import '@carbon/layout/scss/layout';
+
+$css--font-face: true;
+$css--helpers: true;
+$css--body: true;
+$css--reset: true;
+$css--default-type: true;
+$css--plex: true;
+
+@import '@carbon/themes/scss/themes';
+
+@import '@carbon/type/scss/font-face/mono';
+@import '@carbon/type/scss/font-face/sans';
+
+@include carbon--font-face-sans();
+@include carbon--font-face-mono();
+
+// type helper classes
+@import '@carbon/type/scss/classes';
+
+@include carbon--type-classes();
+
+// Use the gray 100 theme
+// $carbon--theme: $carbon--theme--g100;
+// @include carbon--theme();
+
+@import 'carbon-components/scss/globals/scss/styles';
+// @import './_carbon-components.scss'
+
+// custom styles
+::selection {
+  background-color: rgba(0,0,0,0.2);
+}
+html {
+  min-height: 100%;
+}
+.cv-side-nav {
+  border-right: 1px solid #e0e0e0;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-inline-row {
+  display: inline-flex;
+  flex-direction: row;
+}
+.align-items-center {
+  align-items: center;
+}
+.grow-1 {
+  flex-grow: 1;
+}
+.grow-0 {
+  flex-grow: 0;
+}
+.pre {
+  white-space: pre-line;
+}
+.mr-1 {
+  margin-right: 1rem;
+}
+.mr-8 {
+  margin-right: 8rem;
+}
+.ml-1 {
+  margin-left: 1rem;
+}
+.mt-1 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}
+.mb-0_5 {
+  margin-bottom: 0.5rem;
+}
+.my-1_5 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.pb-1 {
+  padding-bottom: 1rem;
+}
+.g50 {
+  color: rgb(128, 128, 128);
+}
+
+.primitive-type-color {
+  color: #047d25;
+}
+.complex-type-color {
+  color: #9e00ff;
+}
+
+b {
+  font-weight: bold !important;
+}
+

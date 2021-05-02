@@ -1,29 +1,44 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="flex-col grow-1">
+    <ae-ui-shell :navigation="navigation" :eventHub="eventHub" />
+    <ae-content :meta="meta" :topics="topics" :eventHub="eventHub" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
+import { Component, Vue } from 'vue-property-decorator'
+import AeUiShell from './components/UiShell.vue'
+import AeContent from './components/Content.vue'
+import { SchemaForTopic, Navigation } from './types'
+import { project } from './project'
+import { getSchemaStringName } from './avro-helper'
+
+function navigationFromSchemaForTopic(
+  schemaForTopics: SchemaForTopic[]
+): Navigation {
+  return {
+    topics: schemaForTopics.map((schemaForTopic) => ({
+      name: schemaForTopic.topic,
+      schemaNames: [getSchemaStringName(schemaForTopic.schema)],
+    })),
+  }
+}
 
 @Component({
   components: {
-    HelloWorld,
+    AeUiShell,
+    AeContent,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  navigation = navigationFromSchemaForTopic(project.topics)
+  meta = project?.meta
+  topics = project?.topics
+  eventHub = new Vue()
+}
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style lang="scss" src="./styles/app.scss" />
+
+function getSchemaStringName(schema: Schema): any { throw new Error('Function
+not implemented.') }
