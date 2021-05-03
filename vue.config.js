@@ -3,6 +3,7 @@ const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 
 module.exports = {
   lintOnSave: false,
+  publicPath: '', // assets relative to index.html - and no html5history router
   css: {
     sourceMap: true,
     loaderOptions: {
