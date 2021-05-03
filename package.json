@@ -1,6 +1,6 @@
 {
   "name": "avro-explorer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Present your avro schema with style",
   "repository": {
     "type": "git",
