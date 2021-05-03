@@ -114,3 +114,8 @@ b {
   font-weight: bold !important;
 }
 
+// fix issue with visible suggest widget border
+.monaco-editor .editor-widget.suggest-widget {
+  border-color: transparent;
+}
+

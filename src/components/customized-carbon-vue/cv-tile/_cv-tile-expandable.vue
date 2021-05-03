@@ -144,6 +144,7 @@ export default {
   padding: 0.7rem;
   height: 2.4rem;
   min-height: 2.4rem;
+  bottom: unset;
 
   svg {
     margin-left: 0;

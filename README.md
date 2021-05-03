@@ -1,24 +1,22 @@
 # avro-explorer
 
-## Project setup
+Present your avro schema with style
+
+## Contributing
+
+### Project setup
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
+and
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
+for development-environment or
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
+for minified production build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
