@@ -5,14 +5,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-            node-version: 14
-      - name: Install deps
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: deps and run tests
         run: |
           npm ci
-      - name: Run tests
-        run: |
           npm test
