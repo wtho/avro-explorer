@@ -1,6 +1,8 @@
 # avro-explorer
 
-Present your avro schema with style
+Present your avro schema with style.
+
+Powered by Vue2, Carbon Components and avsc.
 
 ## Contributing
 

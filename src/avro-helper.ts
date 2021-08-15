@@ -28,7 +28,7 @@ export function isComplexSchema(schema: Schema): schema is ComplexSchemaType {
 export function isComplexNamedSchema(
   schema: Schema
 ): schema is RecordSchemaType | EnumSchemaType | FixedSchemaType {
-  if (!isComplexSchema) {
+  if (!isComplexSchema(schema)) {
     return false
   }
   if (
