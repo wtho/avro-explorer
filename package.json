@@ -33,7 +33,7 @@
   "dependencies": {
     "@carbon/elements": "^10.40.0",
     "@carbon/icons-vue": "^10.37.0",
-    "@carbon/themes": "^10.40.0",
+    "@carbon/themes": "^11.1.0",
     "@carbon/type": "^10.33.0",
     "@carbon/vue": "^2.39.0",
     "avro-typescript": "^1.1.0",
